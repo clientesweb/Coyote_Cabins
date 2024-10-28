@@ -186,12 +186,11 @@
             <h2 class="text-3xl font-bold mb-8 text-center text-gradient animate-fade-in-down">Trabajos Realizados</h2>
             <div class="relative">
                 <div class="overflow-x-auto pb-6 scrollbar-hide">
-                    
                     <div id="proyectos-slider" class="flex space-x-6 w-max">
                         <!-- Project cards will be inserted here by JavaScript -->
                     </div>
                 </div>
-                <button id="scroll-left" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full opacity-50 hover:opacity-100 transition duration-300">
+                <button  id="scroll-left" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full opacity-50 hover:opacity-100 transition duration-300">
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <button id="scroll-right" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full opacity-50 hover:opacity-100 transition duration-300">
@@ -243,8 +242,18 @@
     <section id="testimonios" class="py-16 section-background">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold mb-8 text-center text-gradient animate-fade-in-down">Lo que dicen nuestros clientes</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Testimonial cards will be inserted here by JavaScript -->
+            <div class="relative">
+                <div id="testimonios-slider" class="overflow-x-auto pb-6 scrollbar-hide">
+                    <div class="flex space-x-6">
+                        <!-- Testimonial cards will be inserted here by JavaScript -->
+                    </div>
+                </div>
+                <button id="testimonios-scroll-left" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full opacity-50 hover:opacity-100 transition duration-300">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button id="testimonios-scroll-right" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full opacity-50 hover:opacity-100 transition duration-300">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </div>
     </section>
@@ -291,18 +300,18 @@
                         </li>
                     </ul>
                 </div>
-                <form id="contact-form" class="space-y-4 animate-fade-in-right">
-                    <input type="text" placeholder="Nombre" class="w-full p-2 border border-gray-300 rounded-md" required>
-                    <input type="tel" placeholder="Teléfono" class="w-full p-2 border border-gray-300 rounded-md" required>
-                    <input type="email" placeholder="Correo Electrónico" class="w-full p-2 border border-gray-300 rounded-md" required>
-                    <select class="w-full p-2 border border-gray-300 rounded-md" required>
+                <form id="contact-form" class="space-y-4 animate-fade-in-right" action="https://formspree.io/f/your-form-id" method="POST">
+                    <input type="text" name="name" placeholder="Nombre" class="w-full p-2 border border-gray-300 rounded-md" required>
+                    <input type="tel" name="phone" placeholder="Teléfono" class="w-full p-2 border border-gray-300 rounded-md" required>
+                    <input type="email" name="email" placeholder="Correo Electrónico" class="w-full p-2 border border-gray-300 rounded-md" required>
+                    <select name="cabin_type" class="w-full p-2 border border-gray-300 rounded-md" required>
                         <option value="">Selecciona el tipo de cabaña</option>
                         <option value="A">Tipo A</option>
                         <option value="B">Tipo B</option>
                         <option value="C">Tipo C</option>
                         <option value="D">Tipo D</option>
                     </select>
-                    <textarea placeholder="Mensaje" class="w-full p-2 border border-gray-300 rounded-md" rows="4" required></textarea>
+                    <textarea name="message" placeholder="Mensaje" class="w-full p-2 border border-gray-300 rounded-md" rows="4" required></textarea>
                     <button type="submit" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition duration-300">
                         Enviar Mensaje
                     </button>
@@ -355,22 +364,52 @@
     </footer>
 
     <!-- WhatsApp Button -->
-    <a href="https://wa.me/5212345678901" target="_blank" rel="noopener noreferrer" class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition duration-300 animate-bounce">
+    <a href="https://wa.me/5212345678901?text=Hola%2C%20estoy%20interesado%20en%20una%20caba%C3%B1a.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F" target="_blank" rel="noopener noreferrer" class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition duration-300 animate-bounce">
         <i class="fab fa-whatsapp fa-2x"></i>
     </a>
 
-    <!-- Modal -->
-    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <!-- Modal for Gallery -->
+    <div id="gallery-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white p-4 rounded-lg max-w-3xl w-full">
-            <div id="modal-slider" class="mb-4">
+            <div id="gallery-modal-slider" class="mb-4 relative">
                 <!-- Modal slider images will be inserted here by JavaScript -->
+                <button id="gallery-modal-prev" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full opacity-50 hover:opacity-100 transition duration-300">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button id="gallery-modal-next" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full opacity-50 hover:opacity-100 transition duration-300">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
-            <div id="modal-description" class="mt-4">
+            <div id="gallery-modal-description" class="mt-4">
                 <!-- Description will be inserted here by JavaScript -->
             </div>
             <div class="mt-4 flex justify-between items-center">
                 <h3 class="text-xl font-semibold">Detalles de la Cabaña</h3>
-                <button id="close-modal" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+                <button id="close-gallery-modal" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Projects -->
+    <div id="project-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-4 rounded-lg max-w-3xl w-full">
+            <div id="project-modal-slider" class="mb-4 relative">
+                <!-- Modal slider images will be inserted here by JavaScript -->
+                <button id="project-modal-prev" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full opacity-50 hover:opacity-100 transition duration-300">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button id="project-modal-next" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full opacity-50 hover:opacity-100 transition duration-300">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div id="project-modal-description" class="mt-4">
+                <!-- Description will be inserted here by JavaScript -->
+            </div>
+            <div class="mt-4 flex justify-between items-center">
+                <h3 class="text-xl font-semibold">Detalles del Proyecto</h3>
+                <button id="close-project-modal" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition duration-300">
                     Cerrar
                 </button>
             </div>
