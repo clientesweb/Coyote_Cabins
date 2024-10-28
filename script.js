@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Gallery Filter
     const galleryGrid = document.getElementById('gallery-grid');
-    const filterButtons = document.querySelectorAll('[data-type]');
+    const filterButtons = document.querySelectorAll('.filter-btn');
 
     const galleryItems = [
         { type: 'A', src: 'cabin-a1.jpg', description: 'Cabaña Tipo A - Modelo Pino' },
@@ -115,14 +115,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function createGalleryItem(item) {
         const div = document.createElement('div');
-        div.className = 'relative overflow-hidden rounded-lg shadow-lg group cursor-pointer';
+        div.className = 'gallery-item relative overflow-hidden rounded-lg shadow-lg group cursor-pointer';
         div.innerHTML = `
             <img src="${item.src}" alt="${item.description}" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
             <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <p class="text-white text-center p-4">${item.description}</p>
             </div>
         `;
-        div.addEventListener('click', () => openModal(item));
         return div;
     }
 
@@ -138,9 +137,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
-            filterButtons.forEach(btn => btn.classList.remove('bg-gray-800', 'text-white'));
+            filterButtons.forEach(btn => {
+                btn.classList.remove('bg-gray-800', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-800');
+            });
+            button.classList.remove('bg-gray-200', 'text-gray-800');
             button.classList.add('bg-gray-800', 'text-white');
-            filterGallery(button.dataset.type);
+            filterGallery(button.dataset.filter);
         });
     });
 
@@ -170,6 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
             proyectosSlider.appendChild(card);
         });
     }
+
 
     // Testimonios
     const testimoniosContainer = document.querySelector('#testimonios .grid');
@@ -214,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Scroll Animation
-    const fadeElems = document.querySelectorAll('.animate-fade-in-up, .animate-fade-in-down, .animate-fade-in-left, .animate-fade-in-right');
+    const fadeElems = document.querySelectorAll('.animate-fade-in-up, .animate-fade-in-down');
 
     const observerOptions = {
         threshold: 0.1
@@ -233,6 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
         elem.style.animationPlayState = 'paused';
         observer.observe(elem);
     });
+});
 
     // Form Submission
     const contactForm = document.getElementById('contact-form');
