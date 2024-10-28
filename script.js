@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Gallery Filter
     const galleryGrid = document.getElementById('gallery-grid');
-    const filterButtons = document.querySelectorAll('.filter-btn');
+    const filterButtons = document.querySelectorAll('[data-type]');
 
     const galleryItems = [
         { type: 'A', src: 'cabin-a1.jpg', description: 'Cabaña Tipo A - Modelo Pino' },
@@ -115,13 +115,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function createGalleryItem(item) {
         const div = document.createElement('div');
-        div.className = 'gallery-item relative overflow-hidden rounded-lg shadow-lg group cursor-pointer';
+        div.className = 'relative overflow-hidden rounded-lg shadow-lg group cursor-pointer';
         div.innerHTML = `
             <img src="${item.src}" alt="${item.description}" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
             <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <p class="text-white text-center p-4">${item.description}</p>
             </div>
         `;
+        div.addEventListener('click', () => openModal(item));
         return div;
     }
 
@@ -143,12 +144,32 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             button.classList.remove('bg-gray-200', 'text-gray-800');
             button.classList.add('bg-gray-800', 'text-white');
-            filterGallery(button.dataset.filter);
+            filterGallery(button.dataset.type);
         });
     });
 
     // Initial filter
     filterGallery('all');
+
+    // Modal
+    const modal = document.getElementById('modal');
+    const closeModal = document.getElementById('close-modal');
+    const modalSlider = document.getElementById('modal-slider');
+    const modalDescription = document.getElementById('modal-description');
+
+    function openModal(item) {
+        if (modal && modalSlider && modalDescription) {
+            modalSlider.innerHTML = `<img src="${item.src}" alt="${item.description}" class="w-full h-64 object-cover">`;
+            modalDescription.textContent = item.description;
+            modal.classList.remove('hidden');
+        }
+    }
+
+    if (closeModal) {
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    }
 
     // Proyectos Slider
     const proyectosSlider = document.getElementById('proyectos-slider');
@@ -172,8 +193,34 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             proyectosSlider.appendChild(card);
         });
-    }
 
+        // Add touch scrolling for mobile devices
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        proyectosSlider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - proyectosSlider.offsetLeft;
+            scrollLeft = proyectosSlider.scrollLeft;
+        });
+
+        proyectosSlider.addEventListener('mouseleave', () => {
+            isDown = false;
+        });
+
+        proyectosSlider.addEventListener('mouseup', () => {
+            isDown = false;
+        });
+
+        proyectosSlider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - proyectosSlider.offsetLeft;
+            const walk = (x - startX) * 3;
+            proyectosSlider.scrollLeft = scrollLeft - walk;
+        });
+    }
 
     // Testimonios
     const testimoniosContainer = document.querySelector('#testimonios .grid');
@@ -218,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Scroll Animation
-    const fadeElems = document.querySelectorAll('.animate-fade-in-up, .animate-fade-in-down');
+    const fadeElems = document.querySelectorAll('.animate-fade-in-up, .animate-fade-in-down, .animate-fade-in-left, .animate-fade-in-right');
 
     const observerOptions = {
         threshold: 0.1
@@ -237,7 +284,6 @@ document.addEventListener('DOMContentLoaded', function() {
         elem.style.animationPlayState = 'paused';
         observer.observe(elem);
     });
-});
 
     // Form Submission
     const contactForm = document.getElementById('contact-form');
@@ -247,26 +293,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Here you would typically send the form data to your server
             alert('Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.');
             contactForm.reset();
-        });
-    }
-
-    // Modal
-    const modal = document.getElementById('modal');
-    const closeModal = document.getElementById('close-modal');
-    const modalSlider = document.getElementById('modal-slider');
-    const modalDescription = document.getElementById('modal-description');
-
-    function openModal(item) {
-        if (modal && modalSlider && modalDescription) {
-            modalSlider.innerHTML = `<img src="${item.src}" alt="${item.description}" class="w-full h-64 object-cover">`;
-            modalDescription.textContent = item.description;
-            modal.classList.remove('hidden');
-        }
-    }
-
-    if (closeModal) {
-        closeModal.addEventListener('click', () => {
-            modal.classList.add('hidden');
         });
     }
 
@@ -281,5 +307,18 @@ document.addEventListener('DOMContentLoaded', function() {
         bg.style.backgroundSize = '100px 100px';
         bg.style.opacity = '0.1';
         section.insertBefore(bg, section.firstChild);
+        section.style.position = 'relative';
+        section.style.zIndex = '1';
+    });
+
+    // Call-to-action button navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            
+            });
+        });
     });
 });
