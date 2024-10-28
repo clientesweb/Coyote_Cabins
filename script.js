@@ -45,8 +45,32 @@ document.addEventListener('DOMContentLoaded', function() {
     changeHeroImage(); // Set initial image
     setInterval(changeHeroImage, 5000); // Change image every 5 seconds
 
+    // Función para crear un slider
+    function createSlider(containerId, images) {
+        const container = document.getElementById(containerId);
+        images.forEach((src, index) => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = `Slide ${index + 1}`;
+            img.className = index === 0 ? 'active' : '';
+            container.appendChild(img);
+        });
+    }
+
+    // Función para rotar imágenes en un slider
+    function rotateSliderImages(containerId) {
+        const container = document.getElementById(containerId);
+        const images = container.querySelectorAll('img');
+        let currentImage = 0;
+
+        setInterval(() => {
+            images[currentImage].classList.remove('active');
+            currentImage = (currentImage + 1) % images.length;
+            images[currentImage].classList.add('active');
+        }, 5000);
+    }
+
     // Nosotros Slider
-    const nosotrosSlider = document.getElementById('nosotros-slider');
     const nosotrosImages = [
         'https://images.unsplash.com/photo-1542718610-a1d656d1884c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
         'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1558&q=80',
@@ -54,29 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
         'https://images.unsplash.com/photo-1510798831971-661eb04b3739?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80',
         'https://images.unsplash.com/photo-1518780664697-55e3ad937233?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1530&q=80'
     ];
-
-    function createSlider(container, images) {
-        const sliderContainer = document.createElement('div');
-        sliderContainer.className = 'slider-container';
-        images.forEach(src => {
-            const img = document.createElement('img');
-            img.src = src;
-            img.alt = 'Nosotros';
-            sliderContainer.appendChild(img);
-        });
-        container.appendChild(sliderContainer);
-        return sliderContainer;
-    }
-
-    const nosotrosSliderContainer = createSlider(nosotrosSlider, nosotrosImages);
-    let currentNosotrosSlide = 0;
-
-    function slideNosotros() {
-        currentNosotrosSlide = (currentNosotrosSlide + 1) % nosotrosImages.length;
-        nosotrosSliderContainer.style.transform = `translateX(-${currentNosotrosSlide * 100}%)`;
-    }
-
-    setInterval(slideNosotros, 5000);
+    createSlider('nosotros-slider', nosotrosImages);
+    rotateSliderImages('nosotros-slider');
 
     // Gallery
     const galleryGrid = document.getElementById('gallery-grid');
@@ -144,7 +147,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const projectsGrid = document.querySelector('#proyectos .grid');
     const projectImages = [
         'https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-        'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+        'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwa
+
+G90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
         'https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
         'https://images.unsplash.com/photo-1510798831971-661eb04b3739?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80',
         'https://images.unsplash.com/photo-1518780664697-55e3ad937233?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1530&q=80',
