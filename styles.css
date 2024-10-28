@@ -255,6 +255,12 @@ header {
     animation: fadeInRight 1s ease-out;
 }
 
+/* Section background */
+.section-background {
+    position: relative;
+    overflow: hidden;
+}
+
 .section-background::before {
     content: '';
     position: absolute;
@@ -266,11 +272,6 @@ header {
     background-size: 100px 100px;
     opacity: 0.1;
     z-index: -1;
-}
-
-.section-background {
-    position: relative;
-    overflow: hidden;
 }
 
 /* WhatsApp button animation */
@@ -346,4 +347,46 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
 
 .text-gray-800 {
     color: #1f2937;
+}
+
+/* Scrollbar hide for horizontal scrolling sections */
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+}
+
+/* FAQ accordion styles */
+.faq-item {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.faq-question {
+    cursor: pointer;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.faq-answer.open {
+    max-height: 1000px;
+    transition: max-height 0.5s ease-in;
+}
+
+.faq-icon {
+    transition: transform 0.3s ease;
+}
+
+.faq-icon.open {
+    transform: rotate(180deg);
 }
