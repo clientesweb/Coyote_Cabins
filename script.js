@@ -74,27 +74,29 @@ document.addEventListener('DOMContentLoaded', function() {
         'nosotros3.jpg'
     ];
 
-    const sliderContainer = document.createElement('div');
-    sliderContainer.className = 'slider-container';
-    nosotrosSlider.appendChild(sliderContainer);
+    if (nosotrosSlider) {
+        const sliderContainer = document.createElement('div');
+        sliderContainer.className = 'slider-container';
+        nosotrosSlider.appendChild(sliderContainer);
 
-    nosotrosImages.forEach(src => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = 'Nosotros Image';
-        img.className = 'w-full h-full object-cover';
-        sliderContainer.appendChild(img);
-    });
+        nosotrosImages.forEach(src => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = 'Nosotros Image';
+            img.className = 'w-full h-full object-cover';
+            sliderContainer.appendChild(img);
+        });
 
-    let currentNosotrosImage = 0;
-    const totalNosotrosImages = nosotrosImages.length;
+        let currentNosotrosImage = 0;
+        const totalNosotrosImages = nosotrosImages.length;
 
-    function moveNosotrosSlider() {
-        currentNosotrosImage = (currentNosotrosImage + 1) % totalNosotrosImages;
-        sliderContainer.style.transform = `translateX(-${currentNosotrosImage * 100}%)`;
+        function moveNosotrosSlider() {
+            currentNosotrosImage = (currentNosotrosImage + 1) % totalNosotrosImages;
+            sliderContainer.style.transform = `translateX(-${currentNosotrosImage * 100}%)`;
+        }
+
+        setInterval(moveNosotrosSlider, 5000);
     }
-
-    setInterval(moveNosotrosSlider, 5000);
 
     // Gallery Filter
     const galleryGrid = document.getElementById('gallery-grid');
@@ -125,11 +127,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function filterGallery(type) {
-        galleryGrid.innerHTML = '';
-        const filteredItems = type === 'A' ? galleryItems : galleryItems.filter(item => item.type === type);
-        filteredItems.forEach(item => {
-            galleryGrid.appendChild(createGalleryItem(item));
-        });
+        if (galleryGrid) {
+            galleryGrid.innerHTML = '';
+            const filteredItems = type === 'A' ? galleryItems : galleryItems.filter(item => item.type === type);
+            filteredItems.forEach(item => {
+                galleryGrid.appendChild(createGalleryItem(item));
+            });
+        }
     }
 
     filterButtons.forEach(button => {
@@ -149,14 +153,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalDescription = document.getElementById('modal-description');
 
     function openModal(item) {
-        modalSlider.innerHTML = `<img src="${item.src}" alt="${item.description}" class="w-full h-64 object-cover">`;
-        modalDescription.textContent = item.description;
-        modal.classList.remove('hidden');
+        if (modal && modalSlider && modalDescription) {
+            modalSlider.innerHTML = `<img src="${item.src}" alt="${item.description}" class="w-full h-64 object-cover">`;
+            modalDescription.textContent = item.description;
+            modal.classList.remove('hidden');
+        }
     }
 
-    closeModal.addEventListener('click', () => {
-        modal.classList.add('hidden');
-    });
+    if (closeModal) {
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    }
 
     // Proyectos Slider
     const proyectosSlider = document.getElementById('proyectos-slider');
@@ -167,18 +175,20 @@ document.addEventListener('DOMContentLoaded', function() {
         { name: 'Proyecto 4', location: 'Cancún', image: 'proyecto4.jpg' },
     ];
 
-    proyectos.forEach(proyecto => {
-        const card = document.createElement('div');
-        card.className = 'flex-shrink-0 w-80 bg-white rounded-lg shadow-md overflow-hidden';
-        card.innerHTML = `
-            <img src="${proyecto.image}" alt="${proyecto.name}" class="w-full h-48 object-cover">
-            <div class="p-4">
-                <h3 class="font-semibold text-lg mb-2">${proyecto.name}</h3>
-                <p class="text-gray-600">${proyecto.location}</p>
-            </div>
-        `;
-        proyectosSlider.appendChild(card);
-    });
+    if (proyectosSlider) {
+        proyectos.forEach(proyecto => {
+            const card = document.createElement('div');
+            card.className = 'flex-shrink-0 w-80 bg-white rounded-lg shadow-md overflow-hidden';
+            card.innerHTML = `
+                <img src="${proyecto.image}" alt="${proyecto.name}" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg mb-2">${proyecto.name}</h3>
+                    <p class="text-gray-600">${proyecto.location}</p>
+                </div>
+            `;
+            proyectosSlider.appendChild(card);
+        });
+    }
 
     // Testimonios
     const testimoniosContainer = document.querySelector('#testimonios .grid');
@@ -188,17 +198,18 @@ document.addEventListener('DOMContentLoaded', function() {
         { name: 'Carlos Rodríguez', text: 'Nuestra cabaña es hermosa y funcional. Gracias por hacer realidad nuestro sueño.', avatar: 'avatar3.jpg' },
     ];
 
-    testimonios.forEach(testimonio => {
-        const card = document.createElement('div');
-        card.className = '
-        bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center animate-fade-in-up';
-        card.innerHTML = `
-            <img src="${testimonio.avatar}" alt="${testimonio.name}" class="w-20 h-20 rounded-full mb-4">
-            <p class="text-gray-600 mb-4">"${testimonio.text}"</p>
-            <h3 class="font-semibold">${testimonio.name}</h3>
-        `;
-        testimoniosContainer.appendChild(card);
-    });
+    if (testimoniosContainer) {
+        testimonios.forEach(testimonio => {
+            const card = document.createElement('div');
+            card.className = 'bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center animate-fade-in-up';
+            card.innerHTML = `
+                <img src="${testimonio.avatar}" alt="${testimonio.name}" class="w-20 h-20 rounded-full mb-4">
+                <p class="text-gray-600 mb-4">"${testimonio.text}"</p>
+                <h3 class="font-semibold">${testimonio.name}</h3>
+            `;
+            testimoniosContainer.appendChild(card);
+        });
+    }
 
     // FAQs
     const faqsContainer = document.querySelector('#faqs .max-w-3xl');
@@ -208,16 +219,18 @@ document.addEventListener('DOMContentLoaded', function() {
         { question: '¿Cuál es la garantía de sus cabañas?', answer: 'Ofrecemos una garantía de 5 años en la estructura y 2 años en acabados e instalaciones.' },
     ];
 
-    faqs.forEach((faq, index) => {
-        const item = document.createElement('div');
-        item.className = 'mb-4 animate-fade-in-up';
-        item.style.animationDelay = `${index * 0.1}s`;
-        item.innerHTML = `
-            <h3 class="font-semibold mb-2">${faq.question}</h3>
-            <p class="text-gray-600">${faq.answer}</p>
-        `;
-        faqsContainer.appendChild(item);
-    });
+    if (faqsContainer) {
+        faqs.forEach((faq, index) => {
+            const item = document.createElement('div');
+            item.className = 'mb-4 animate-fade-in-up';
+            item.style.animationDelay = `${index * 0.1}s`;
+            item.innerHTML = `
+                <h3 class="font-semibold mb-2">${faq.question}</h3>
+                <p class="text-gray-600">${faq.answer}</p>
+            `;
+            faqsContainer.appendChild(item);
+        });
+    }
 
     // Scroll Animation
     const fadeElems = document.querySelectorAll('.animate-fade-in-up, .animate-fade-in-down, .animate-fade-in-left, .animate-fade-in-right');
@@ -242,10 +255,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Form Submission
     const contactForm = document.getElementById('contact-form');
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Here you would typically send the form data to your server
-        alert('Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.');
-        contactForm.reset();
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically send the form data to your server
+            alert('Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.');
+            contactForm.reset();
+        });
+    }
+
+    // Apply background to sections
+    const sections = document.querySelectorAll('.section-background');
+    sections.forEach(section => {
+        section.style.position = 'relative';
+        section.style.overflow = 'hidden';
+        const bg = document.createElement('div');
+        bg.className = 'absolute inset-0 z-0';
+        bg.style.backgroundImage = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 L100 50 L50 100 L0 50 Z' fill='%23f3f4f6' fill-opacity='0.4'/%3E%3C/svg%3E\")";
+        bg.style.backgroundSize = '100px 100px';
+        bg.style.opacity = '0.1';
+        section.insertBefore(bg, section.firstChild);
     });
 });
