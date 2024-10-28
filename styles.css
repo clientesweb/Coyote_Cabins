@@ -184,8 +184,8 @@ html {
 /* Instagram Reels Section */
 .instagram-post {
     position: relative;
-    width: 100%;
-    padding-bottom: 100%; /* Square aspect ratio */
+    width: 315px;
+    height: 560px;
     overflow: hidden;
 }
 
@@ -261,4 +261,69 @@ html {
 
 .fixed.bottom-4.right-4 {
     animation: pulse 2s infinite;
+}
+
+/* Mobile Menu Styles */
+#mobile-menu {
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+#mobile-menu.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Proyectos Slider */
+#proyectos-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.proyecto-card {
+    flex: 0 0 auto;
+    width: 300px;
+    scroll-snap-align: start;
+}
+
+/* FAQ Styles */
+.faq-item {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.faq-question {
+    cursor: pointer;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.faq-answer.show {
+    max-height: 500px;
+    transition: max-height 0.5s ease-in;
+}
+
+/* Testimonial Styles */
+.testimonial-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    transition: transform 0.3s ease-in-out;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+}
+
+.star-rating {
+    color: #fbbf24;
 }
