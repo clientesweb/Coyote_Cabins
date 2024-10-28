@@ -13,11 +13,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Mobile Menu Toggle
     const menuToggle = document.getElementById('menu-toggle');
-    const mainNav = document.getElementById('main-nav');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMenu = document.getElementById('close-menu');
 
     menuToggle.addEventListener('click', function() {
-        mainNav.classList.toggle('hidden');
-        mainNav.classList.toggle('show');
+        mobileMenu.classList.toggle('hidden');
+        mobileMenu.classList.toggle('show');
+    });
+
+    closeMenu.addEventListener('click', function() {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('show');
+    });
+
+    // Close mobile menu when clicking on a link
+    const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+    mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.remove('show');
+        });
     });
 
     // Hero Slider
@@ -117,42 +132,106 @@ document.addEventListener('DOMContentLoaded', function() {
     function filterGallery(type) {
         const images = document.querySelectorAll('.gallery-image');
         images.forEach(image => {
-            if (type === 'A' || image.getAttribute('data-type') === type) {
+            if (type === 'A' || image.getAttribute('data-type') === type)
                 image.style.display = 'block';
-            } else {
+            else
                 image.style.display = 'none';
-            }
         });
     }
 
     // Projects
-    const projectsGrid = document.querySelector('#proyectos .grid');
+    const projectsSlider = document.getElementById('proyectos-slider');
     const projectImages = [
-        { src: 'https://images.unsplash.com/photo-1604868189626-7e0022267cc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', title: 'Proyecto 1' },
-        { src: 'https://images.unsplash.com/photo-1604868189650-e9e5d8f4a4b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', title: 'Proyecto 2' },
-        { src: 'https://images.unsplash.com/photo-1604868189679-e9e5d8f4a4b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', title: 'Proyecto 3' }
+        { src: 'https://images.unsplash.com/photo-1604868189626-7e0022267cc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', title: 'Proyecto 1', description: 'Cabaña de lujo con vista al lago' },
+        { src: 'https://images.unsplash.com/photo-1604868189650-e9e5d8f4a4b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', title: 'Proyecto 2', description: 'Cabaña familiar en el bosque' },
+        { src: 'https://images.unsplash.com/photo-1604868189679-e9e5d8f4a4b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', title: 'Proyecto 3', description: 'Cabaña moderna con terraza panorámica' }
     ];
 
     projectImages.forEach(project => {
         const div = document.createElement('div');
-        div.className = 'relative overflow-hidden rounded-lg shadow-lg';
+        div.className = 'proyecto-card bg-white rounded-lg shadow-lg overflow-hidden';
 
         const img = document.createElement('img');
         img.src = project.src;
         img.alt = project.title;
-        img.className = 'w-full h-64 object-cover';
+        img.className = 'w-full h-48 object-cover';
 
-        const overlay = document.createElement('div');
-        overlay.className = 'absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300';
+        const content = document.createElement('div');
+        content.className = 'p-4';
 
         const title = document.createElement('h3');
         title.textContent = project.title;
-        title.className = 'text-white text-xl font-bold';
+        title.className = 'text-xl font-bold mb-2';
 
-        overlay.appendChild(title);
+        const description = document.createElement('p');
+        description.textContent = project.description;
+        description.className = 'text-gray-600';
+
+        content.appendChild(title);
+        content.appendChild(description);
         div.appendChild(img);
-        div.appendChild(overlay);
-        projectsGrid.appendChild(div);
+        div.appendChild(content);
+        projectsSlider.appendChild(div);
+    });
+
+    // Testimonials
+    const testimonialSection = document.querySelector('#testimonios .grid');
+    const testimonials = [
+        { name: 'Juan Pérez', rating: 5, text: 'Excelente servicio y calidad en la construcción de nuestra cabaña. ¡Superó nuestras expectativas!' },
+        { name: 'María González', rating: 4, text: 'Muy satisfecha con el resultado final. El equipo fue profesional y atento a nuestras necesidades.' },
+        { name: 'Carlos Rodríguez', rating: 5, text: 'La atención al detalle en el diseño y la construcción es impresionante. Totalmente recomendado.' }
+    ];
+
+    testimonials.forEach(testimonial => {
+        const card = document.createElement('div');
+        card.className = 'testimonial-card';
+
+        const content = `
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 bg-gray-300 rounded-full mr-4"></div>
+                <div>
+                    <h3 class="font-bold">${testimonial.name}</h3>
+                    <div class="star-rating">${'★'.repeat(testimonial.rating)}${'☆'.repeat(5 - testimonial.rating)}</div>
+                </div>
+            </div>
+            <p class="text-gray-600">"${testimonial.text}"</p>
+        `;
+
+        card.innerHTML = content;
+        testimonialSection.appendChild(card);
+    });
+
+    // FAQs
+    const faqSection = document.querySelector('#faqs .max-w-3xl');
+    const faqs = [
+        { question: '¿Cuánto tiempo toma construir una cabaña?', answer: 'El tiempo de construcción varía según el tamaño y la complejidad del diseño, pero generalmente oscila entre 2 y 4 meses.' },
+        { question: '¿Ofrecen diseños personalizados?', answer: 'Sí, trabajamos estrechamente con nuestros clientes para crear diseños personalizados que se adapten a sus necesidades y preferencias.' },
+        { question: '¿Qué tipos de materiales utilizan?', answer: 'Utilizamos materiales de alta calidad, principalmente madera tratada y otros materiales ecológicos y duraderos.' },
+        { question: '¿Proporcionan servicios de mantenimiento post-construcción?', answer: 'Sí, ofrecemos servicios de mantenimiento y reparación para asegurar que su cabaña se mantenga en excelentes condiciones a lo largo del tiempo.' }
+    ];
+
+    faqs.forEach((faq, index) => {
+        const faqItem = document.createElement('div');
+        faqItem.className = 'faq-item';
+        faqItem.innerHTML = `
+            <div class="faq-question">
+                <h3 class="text-lg font-semibold">${faq.question}</h3>
+                <span class="text-2xl">+</span>
+            </div>
+            <div class="faq-answer">
+                <p class="py-2">${faq.answer}</p>
+            </div>
+        `;
+        faqSection.appendChild(faqItem);
+
+        const question = faqItem.querySelector('.faq-question');
+        const answer = faqItem.querySelector('.faq-answer');
+        const icon = question.querySelector('span');
+
+        question.addEventListener('click', () => {
+            answer.classList.toggle('show');
+            icon.textContent = answer.classList.contains('show') ? '−' : '+';
+        });
     });
 
     // Modal
