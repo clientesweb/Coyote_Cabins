@@ -39,6 +39,13 @@ html {
 
     #banner-messages {
         margin-bottom: 0.5rem;
+        width: 100%;
+    }
+
+    #top-banner .flex.space-x-4 {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
     }
 
     header .container {
@@ -326,4 +333,9 @@ html {
 
 .star-rating {
     color: #fbbf24;
+}
+
+/* New style for banner messages */
+#banner-messages p {
+    margin-bottom: 0.25rem;
 }
