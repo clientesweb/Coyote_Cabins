@@ -255,12 +255,6 @@ header {
     animation: fadeInRight 1s ease-out;
 }
 
-/* Section background */
-.section-background {
-    position: relative;
-    overflow: hidden;
-}
-
 .section-background::before {
     content: '';
     position: absolute;
@@ -272,6 +266,11 @@ header {
     background-size: 100px 100px;
     opacity: 0.1;
     z-index: -1;
+}
+
+.section-background {
+    position: relative;
+    overflow: hidden;
 }
 
 /* WhatsApp button animation */
