@@ -448,3 +448,27 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
     font-style: italic;
     color: #4b5563;
 }
+/* Preloader styles */
+#preloader {
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+#preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.33);
+    }
+    80%, 100% {
+        opacity: 0;
+    }
+}
+
+.animate-pulse-ring {
+    animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    border: 6px solid #4a5568;
+    opacity: 1;
+}
