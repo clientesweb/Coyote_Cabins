@@ -32,13 +32,38 @@ html {
 
 /* Responsive adjustments */
 @media (max-width: 640px) {
-    #top-banner, header .container {
+    #top-banner .container {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
     }
 
-    #top-banner > div, header nav {
-        margin-top: 0.5rem;
+    #banner-messages {
+        margin-bottom: 0.5rem;
+    }
+
+    header .container {
+        flex-wrap: wrap;
+    }
+
+    header img {
+        margin-right: auto;
+    }
+
+    #menu-toggle {
+        margin-left: auto;
+    }
+
+    #main-nav {
+        flex-basis: 100%;
+        margin-top: 1rem;
+    }
+
+    #main-nav ul {
+        flex-direction: column;
+    }
+
+    #main-nav li {
+        margin-bottom: 0.5rem;
     }
 }
 
@@ -223,4 +248,47 @@ html {
     height: 100%;
     object-fit: cover;
     flex-shrink: 0;
+}
+
+/* Estilos para los sliders */
+.slider-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.slider-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.slider-container img.active {
+    opacity: 1;
+}
+
+/* Ajustes para el banner superior y el header */
+#top-banner {
+    justify-content: space-between;
+}
+
+#banner-messages {
+    text-align: left;
+}
+
+header .container {
+    justify-content: space-between;
+}
+
+/* Centrar el contenido del hero */
+#inicio .absolute {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
