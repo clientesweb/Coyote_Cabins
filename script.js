@@ -4,9 +4,15 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentMessage = 0;
 
     function rotateBannerMessages() {
-        bannerMessages[currentMessage].classList.add('hidden');
-        currentMessage = (currentMessage + 1) % bannerMessages.length;
-        bannerMessages[currentMessage].classList.remove('hidden');
+        bannerMessages[currentMessage].classList.add('opacity-0');
+        setTimeout(() => {
+            bannerMessages[currentMessage].classList.add('hidden');
+            currentMessage = (currentMessage + 1) % bannerMessages.length;
+            bannerMessages[currentMessage].classList.remove('hidden');
+            setTimeout(() => {
+                bannerMessages[currentMessage].classList.remove('opacity-0');
+            }, 50);
+        }, 500);
     }
 
     setInterval(rotateBannerMessages, 5000);
@@ -63,176 +69,78 @@ document.addEventListener('DOMContentLoaded', function() {
     // Nosotros Slider
     const nosotrosSlider = document.getElementById('nosotros-slider');
     const nosotrosImages = [
-        'https://images.unsplash.com/photo-1542718610-a1d656d1884c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=958&q=80',
-        'https://images.unsplash.com/photo-1482192505345-5655af888cc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1228&q=80'
+        'nosotros1.jpg',
+        'nosotros2.jpg',
+        'nosotros3.jpg'
     ];
 
     const sliderContainer = document.createElement('div');
     sliderContainer.className = 'slider-container';
+    nosotrosSlider.appendChild(sliderContainer);
+
     nosotrosImages.forEach(src => {
         const img = document.createElement('img');
         img.src = src;
         img.alt = 'Nosotros Image';
+        img.className = 'w-full h-full object-cover';
         sliderContainer.appendChild(img);
     });
-    nosotrosSlider.appendChild(sliderContainer);
 
     let currentNosotrosImage = 0;
-    setInterval(() => {
-        currentNosotrosImage = (currentNosotrosImage + 1) % nosotrosImages.length;
-        sliderContainer.style.transform = `translateX(-${currentNosotrosImage * 100}%)`;
-    }, 5000);
+    const totalNosotrosImages = nosotrosImages.length;
 
-    // Gallery
+    function moveNosotrosSlider() {
+        currentNosotrosImage = (currentNosotrosImage + 1) % totalNosotrosImages;
+        sliderContainer.style.transform = `translateX(-${currentNosotrosImage * 100}%)`;
+    }
+
+    setInterval(moveNosotrosSlider, 5000);
+
+    // Gallery Filter
     const galleryGrid = document.getElementById('gallery-grid');
-    const galleryImages = [
-        { src: 'tipoA.png', type: 'A' },
-        { src: 'https://images.unsplash.com/photo-1604868189278-e70c35ba14b0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', type: 'B' },
-        { src: 'https://images.unsplash.com/photo-1604868189536-0e9a4f0b1b1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', type: 'C' },
-        { src: 'https://images.unsplash.com/photo-1604868189612-5e7c2b3f4e7f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', type: 'D' },
-        { src: 'https://images.unsplash.com/photo-1604868189654-7e7a0f836300?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', type: 'A' },
-        { src: 'https://images.unsplash.com/photo-1604868189703-9e8e0934e0f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', type: 'B' }
+    const filterButtons = document.querySelectorAll('[data-type]');
+
+    const galleryItems = [
+        { type: 'A', src: 'cabin-a1.jpg', description: 'Cabaña Tipo A - Modelo Pino' },
+        { type: 'A', src: 'cabin-a2.jpg', description: 'Cabaña Tipo A - Modelo Roble' },
+        { type: 'B', src: 'cabin-b1.jpg', description: 'Cabaña Tipo B - Modelo Cedro' },
+        { type: 'B', src: 'cabin-b2.jpg', description: 'Cabaña Tipo B - Modelo Abeto' },
+        { type: 'C', src: 'cabin-c1.jpg', description: 'Cabaña Tipo C - Modelo Secuoya' },
+        { type: 'C', src: 'cabin-c2.jpg', description: 'Cabaña Tipo C - Modelo Arce' },
+        { type: 'D', src: 'cabin-d1.jpg', description: 'Cabaña Tipo D - Modelo Nogal' },
+        { type: 'D', src: 'cabin-d2.jpg', description: 'Cabaña Tipo D - Modelo Caoba' },
     ];
 
-    galleryImages.forEach(image => {
+    function createGalleryItem(item) {
         const div = document.createElement('div');
-        div.className = 'relative overflow-hidden rounded-lg shadow-lg gallery-image';
-        div.setAttribute('data-type', image.type);
-
-        const img = document.createElement('img');
-        img.src = image.src;
-        img.alt = `Cabaña Tipo ${image.type}`;
-        img.className = 'w-full h-64 object-cover';
-
-        const overlay = document.createElement('div');
-        overlay.className = 'absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300';
-
-        const button = document.createElement('button');
-        button.textContent = 'Ver más';
-        button.className = 'bg-white text-gray-800 font-bold py-2 px-4 rounded hover:bg-gray-200 transition duration-300';
-        button.addEventListener('click', () => openModal(image));
-
-        overlay.appendChild(button);
-        div.appendChild(img);
-        div.appendChild(overlay);
-        galleryGrid.appendChild(div);
-    });
-
-    const filterButtons = document.querySelectorAll('#galeria button[data-type]');
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const type = button.getAttribute('data-type');
-            filterGallery(type);
-            filterButtons.forEach(btn => btn.classList.remove('bg-gray-800', 'text-white'));
-            button.classList.add('bg-gray-800', 'text-white');
-        });
-    });
+        div.className = 'relative overflow-hidden rounded-lg shadow-lg group cursor-pointer';
+        div.innerHTML = `
+            <img src="${item.src}" alt="${item.description}" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
+            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p class="text-white text-center p-4">${item.description}</p>
+            </div>
+        `;
+        div.addEventListener('click', () => openModal(item));
+        return div;
+    }
 
     function filterGallery(type) {
-        const images = document.querySelectorAll('.gallery-image');
-        images.forEach(image => {
-            if (type === 'A' || image.getAttribute('data-type') === type)
-                image.style.display = 'block';
-            else
-                image.style.display = 'none';
+        galleryGrid.innerHTML = '';
+        const filteredItems = type === 'A' ? galleryItems : galleryItems.filter(item => item.type === type);
+        filteredItems.forEach(item => {
+            galleryGrid.appendChild(createGalleryItem(item));
         });
     }
 
-    // Projects
-    const projectsSlider = document.getElementById('proyectos-slider');
-    const projectImages = [
-        { src: 'https://images.unsplash.com/photo-1604868189626-7e0022267cc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', title: 'Proyecto 1', description: 'Cabaña de lujo con vista al lago' },
-        { src: 'https://images.unsplash.com/photo-1604868189650-e9e5d8f4a4b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', title: 'Proyecto 2', description: 'Cabaña familiar en el bosque' },
-        { src: 'https://images.unsplash.com/photo-1604868189679-e9e5d8f4a4b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', title: 'Proyecto 3', description: 'Cabaña moderna con terraza panorámica' }
-    ];
-
-    projectImages.forEach(project => {
-        const div = document.createElement('div');
-        div.className = 'proyecto-card bg-white rounded-lg shadow-lg overflow-hidden';
-
-        const img = document.createElement('img');
-        img.src = project.src;
-        img.alt = project.title;
-        img.className = 'w-full h-48 object-cover';
-
-        const content = document.createElement('div');
-        content.className = 'p-4';
-
-        const title = document.createElement('h3');
-        title.textContent = project.title;
-        title.className = 'text-xl font-bold mb-2';
-
-        const description = document.createElement('p');
-        description.textContent = project.description;
-        description.className = 'text-gray-600';
-
-        content.appendChild(title);
-        content.appendChild(description);
-        div.appendChild(img);
-        div.appendChild(content);
-        projectsSlider.appendChild(div);
-    });
-
-    // Testimonials
-    const testimonialSection = document.querySelector('#testimonios .grid');
-    const testimonials = [
-        { name: 'Juan Pérez', rating: 5, text: 'Excelente servicio y calidad en la construcción de nuestra cabaña. ¡Superó nuestras expectativas!' },
-        { name: 'María González', rating: 4, text: 'Muy satisfecha con el resultado final. El equipo fue profesional y atento a nuestras necesidades.' },
-        { name: 'Carlos Rodríguez', rating: 5, text: 'La atención al detalle en el diseño y la construcción es impresionante. Totalmente recomendado.' }
-    ];
-
-    testimonials.forEach(testimonial => {
-        const card = document.createElement('div');
-        card.className = 'testimonial-card';
-
-        const content = `
-            <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-gray-300 rounded-full mr-4"></div>
-                <div>
-                    <h3 class="font-bold">${testimonial.name}</h3>
-                    <div class="star-rating">${'★'.repeat(testimonial.rating)}${'☆'.repeat(5 - testimonial.rating)}</div>
-                </div>
-            </div>
-            <p class="text-gray-600">"${testimonial.text}"</p>
-        `;
-
-        card.innerHTML = content;
-        testimonialSection.appendChild(card);
-    });
-
-    // FAQs
-    const faqSection = document.querySelector('#faqs .max-w-3xl');
-    const faqs = [
-        { question: '¿Cuánto tiempo toma construir una cabaña?', answer: 'El tiempo de construcción varía según el tamaño y la complejidad del diseño, pero generalmente oscila entre 2 y 4 meses.' },
-        { question: '¿Ofrecen diseños personalizados?', answer: 'Sí, trabajamos estrechamente con nuestros clientes para crear diseños personalizados que se adapten a sus necesidades y preferencias.' },
-        { question: '¿Qué tipos de materiales utilizan?', answer: 'Utilizamos materiales de alta calidad, principalmente madera tratada y otros materiales ecológicos y duraderos.' },
-        { question: '¿Proporcionan servicios de mantenimiento post-construcción?', answer: 'Sí, ofrecemos servicios de mantenimiento y reparación para asegurar que su cabaña se mantenga en excelentes condiciones a lo largo del tiempo.' }
-    ];
-
-    faqs.forEach((faq, index) => {
-        const faqItem = document.createElement('div');
-        faqItem.className = 'faq-item';
-        faqItem.innerHTML = `
-            <div class="faq-question">
-                <h3 class="text-lg font-semibold">${faq.question}</h3>
-                <span class="text-2xl">+</span>
-            </div>
-            <div class="faq-answer">
-                <p class="py-2">${faq.answer}</p>
-            </div>
-        `;
-        faqSection.appendChild(faqItem);
-
-        const question = faqItem.querySelector('.faq-question');
-        const answer = faqItem.querySelector('.faq-answer');
-        const icon = question.querySelector('span');
-
-        question.addEventListener('click', () => {
-            answer.classList.toggle('show');
-            icon.textContent = answer.classList.contains('show') ? '−' : '+';
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            filterButtons.forEach(btn => btn.classList.remove('bg-gray-800', 'text-white'));
+            button.classList.add('bg-gray-800', 'text-white');
+            filterGallery(button.dataset.type);
         });
     });
+
+    filterGallery('A');
 
     // Modal
     const modal = document.getElementById('modal');
@@ -240,116 +148,104 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalSlider = document.getElementById('modal-slider');
     const modalDescription = document.getElementById('modal-description');
 
-    function openModal(image) {
-        modalSlider.innerHTML = '';
-        const sliderContainer = document.createElement('div');
-        sliderContainer.className = 'slider-container';
-
-        // Add multiple images to the modal slider
-        const modalImages = [
-            image.src,
-            'https://images.unsplash.com/photo-1604868189626-7e0022267cc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-            'https://images.unsplash.com/photo-1604868189650-e9e5d8f4a4b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'
-        ];
-
-        modalImages.forEach(src => {
-            const img = document.createElement('img');
-            img.src = src;
-            img.alt = 'Cabaña Image';
-            img.className = 'w-full h-auto';
-            sliderContainer.appendChild(img);
-        });
-
-        modalSlider.appendChild(sliderContainer);
-
-        // Add description
-        modalDescription.innerHTML = `
-            <p class="text-gray-700">Esta hermosa cabaña tipo ${image.type} ofrece una experiencia única en medio de la naturaleza. 
-            Con amplios espacios y acabados de lujo, es perfecta para escapadas familiares o románticas.</p>
-            <ul class="mt-4 list-disc list-inside">
-                <li>2 habitaciones</li>
-                <li>Sala de estar con chimenea</li>
-                <li>Cocina completamente equipada</li>
-                <li>Terraza con vista panorámica</li>
-            </ul>
-        `;
-
+    function openModal(item) {
+        modalSlider.innerHTML = `<img src="${item.src}" alt="${item.description}" class="w-full h-64 object-cover">`;
+        modalDescription.textContent = item.description;
         modal.classList.remove('hidden');
-
-        // Initialize slider functionality
-        let currentSlide = 0;
-        const totalSlides = modalImages.length;
-
-        function showSlide(index) {
-            sliderContainer.style.transform = `translateX(-${index * 100}%)`;
-        }
-
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            showSlide(currentSlide);
-        }
-
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-            showSlide(currentSlide);
-        }
-
-        // Add navigation buttons
-        const prevButton = document.createElement('button');
-        prevButton.innerHTML = '&#10094;';
-        prevButton.className = 'absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-2 rounded-full';
-        prevButton.addEventListener('click', prevSlide);
-
-        const nextButton = document.createElement('button');
-        nextButton.innerHTML = '&#10095;';
-        nextButton.className = 'absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-2 rounded-full';
-        nextButton.addEventListener('click', nextSlide);
-
-        modalSlider.appendChild(prevButton);
-        modalSlider.appendChild(nextButton);
     }
 
     closeModal.addEventListener('click', () => {
         modal.classList.add('hidden');
     });
 
-    // Close modal when clicking outside
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.add('hidden');
-        }
+    // Proyectos Slider
+    const proyectosSlider = document.getElementById('proyectos-slider');
+    const proyectos = [
+        { name: 'Proyecto 1', location: 'Ciudad de México', image: 'proyecto1.jpg' },
+        { name: 'Proyecto 2', location: 'Guadalajara', image: 'proyecto2.jpg' },
+        { name: 'Proyecto 3', location: 'Monterrey', image: 'proyecto3.jpg' },
+        { name: 'Proyecto 4', location: 'Cancún', image: 'proyecto4.jpg' },
+    ];
+
+    proyectos.forEach(proyecto => {
+        const card = document.createElement('div');
+        card.className = 'flex-shrink-0 w-80 bg-white rounded-lg shadow-md overflow-hidden';
+        card.innerHTML = `
+            <img src="${proyecto.image}" alt="${proyecto.name}" class="w-full h-48 object-cover">
+            <div class="p-4">
+                <h3 class="font-semibold text-lg mb-2">${proyecto.name}</h3>
+                <p class="text-gray-600">${proyecto.location}</p>
+            </div>
+        `;
+        proyectosSlider.appendChild(card);
     });
 
-    // Scroll Animations
-    const fadeElements = document.querySelectorAll('.fade-in-section');
+    // Testimonios
+    const testimoniosContainer = document.querySelector('#testimonios .grid');
+    const testimonios = [
+        { name: 'Juan Pérez', text: 'Excelente servicio y calidad en la construcción de nuestra cabaña. ¡Superó nuestras expectativas!', avatar: 'avatar1.jpg' },
+        { name: 'María González', text: 'El equipo de Coyote Cabins fue muy profesional y entregó nuestro proyecto en tiempo récord.', avatar: 'avatar2.jpg' },
+        { name: 'Carlos Rodríguez', text: 'Nuestra cabaña es hermosa y funcional. Gracias por hacer realidad nuestro sueño.', avatar: 'avatar3.jpg' },
+    ];
 
-    const fadeIn = (element) => {
-        var distInView = element.getBoundingClientRect().top - window.innerHeight + 20;
-        if (distInView < 0) {
-            element.classList.add('is-visible');
-        } else {
-            element.classList.remove('is-visible');
-        }
+    testimonios.forEach(testimonio => {
+        const card = document.createElement('div');
+        card.className = '
+        bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center animate-fade-in-up';
+        card.innerHTML = `
+            <img src="${testimonio.avatar}" alt="${testimonio.name}" class="w-20 h-20 rounded-full mb-4">
+            <p class="text-gray-600 mb-4">"${testimonio.text}"</p>
+            <h3 class="font-semibold">${testimonio.name}</h3>
+        `;
+        testimoniosContainer.appendChild(card);
+    });
+
+    // FAQs
+    const faqsContainer = document.querySelector('#faqs .max-w-3xl');
+    const faqs = [
+        { question: '¿Cuánto tiempo toma construir una cabaña?', answer: 'El tiempo de construcción varía según el modelo y tamaño, pero generalmente toma entre 4 a 8 semanas.' },
+        { question: '¿Ofrecen servicios de diseño personalizado?', answer: 'Sí, ofrecemos servicios de diseño personalizado para adaptar nuestras cabañas a sus necesidades específicas.' },
+        { question: '¿Cuál es la garantía de sus cabañas?', answer: 'Ofrecemos una garantía de 5 años en la estructura y 2 años en acabados e instalaciones.' },
+    ];
+
+    faqs.forEach((faq, index) => {
+        const item = document.createElement('div');
+        item.className = 'mb-4 animate-fade-in-up';
+        item.style.animationDelay = `${index * 0.1}s`;
+        item.innerHTML = `
+            <h3 class="font-semibold mb-2">${faq.question}</h3>
+            <p class="text-gray-600">${faq.answer}</p>
+        `;
+        faqsContainer.appendChild(item);
+    });
+
+    // Scroll Animation
+    const fadeElems = document.querySelectorAll('.animate-fade-in-up, .animate-fade-in-down, .animate-fade-in-left, .animate-fade-in-right');
+
+    const observerOptions = {
+        threshold: 0.1
     };
 
-    const handleScroll = () => {
-        fadeElements.forEach((element) => {
-            fadeIn(element);
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+                observer.unobserve(entry.target);
+            }
         });
-    };
+    }, observerOptions);
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
+    fadeElems.forEach(elem => {
+        elem.style.animationPlayState = 'paused';
+        observer.observe(elem);
+    });
 
     // Form Submission
     const contactForm = document.getElementById('contact-form');
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        // Here you would typically send the form data to a server
-        alert('¡Gracias por tu mensaje! Te contactaremos pronto.');
+        // Here you would typically send the form data to your server
+        alert('Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.');
         contactForm.reset();
     });
-
-    // Load Instagram posts
-    window.instgrm.Embeds.process();
 });
