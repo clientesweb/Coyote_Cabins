@@ -50,30 +50,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const nosotrosImages = [
         'https://images.unsplash.com/photo-1542718610-a1d656d1884c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
         'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1558&q=80',
-        'https://images.unsplash.com/photo-1482192505345-5655af888cc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80'
+        'https://images.unsplash.com/photo-1482192505345-5655af888cc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80',
+        'https://images.unsplash.com/photo-1510798831971-661eb04b3739?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80',
+        'https://images.unsplash.com/photo-1518780664697-55e3ad937233?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1530&q=80'
     ];
-    let currentNosotrosImage = 0;
 
-    function createNosotrosImage(src, isActive = false) {
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = 'Nosotros';
-        img.className = isActive ? 'active' : '';
-        return img;
+    function createSlider(container, images) {
+        const sliderContainer = document.createElement('div');
+        sliderContainer.className = 'slider-container';
+        images.forEach(src => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = 'Nosotros';
+            sliderContainer.appendChild(img);
+        });
+        container.appendChild(sliderContainer);
+        return sliderContainer;
     }
 
-    nosotrosImages.forEach((src, index) => {
-        nosotrosSlider.appendChild(createNosotrosImage(src, index === 0));
-    });
+    const nosotrosSliderContainer = createSlider(nosotrosSlider, nosotrosImages);
+    let currentNosotrosSlide = 0;
 
-    function rotateNosotrosImages() {
-        const images = nosotrosSlider.querySelectorAll('img');
-        images[currentNosotrosImage].classList.remove('active');
-        currentNosotrosImage = (currentNosotrosImage + 1) % images.length;
-        images[currentNosotrosImage].classList.add('active');
+    function slideNosotros() {
+        currentNosotrosSlide = (currentNosotrosSlide + 1) % nosotrosImages.length;
+        nosotrosSliderContainer.style.transform = `translateX(-${currentNosotrosSlide * 100}%)`;
     }
 
-    setInterval(rotateNosotrosImages, 5000);
+    setInterval(slideNosotros, 5000);
 
     // Gallery
     const galleryGrid = document.getElementById('gallery-grid');
@@ -109,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
         item.innerHTML = `
             <img src="${src}" alt="Cabaña Tipo ${type}" class="w-full h-auto rounded-lg shadow-md transition duration-300 group-hover:opacity-75">
             <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
-                <button class="bg-white text-gray-800 font-semibold py-2 px-4 rounded shadow view-details">Ver Detalles</button>
+                <button class="bg-white text-gray-800 font-semibold py-2 px-4 rounded shadow view-details" data-type="${type}">Ver Detalles</button>
             </div>
         `;
         return item;
@@ -154,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
         projectItem.innerHTML = `
             <img src="${src}" alt="Proyecto ${index + 1}" class="w-full h-auto rounded-lg shadow-md transition duration-300 group-hover:opacity-75">
             <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
-                <button class="bg-white text-gray-800 font-semibold py-2 px-4 rounded shadow view-project">Ver Proyecto</button>
+                <button class="bg-white text-gray-800 font-semibold py-2 px-4 rounded shadow view-project" data-project="${index}">Ver Proyecto</button>
             </div>
         `;
         projectsGrid.appendChild(projectItem);
@@ -162,20 +165,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Modal
     const modal = document.getElementById('modal');
-    const modalImage = document.getElementById('modal-image');
+    const modalSlider = document.getElementById('modal-slider');
     const closeModal = document.getElementById('close-modal');
 
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('view-details') || e.target.classList.contains('view-project')) {
-            const imgSrc = e.target.closest('.group').querySelector('img').src;
-            modalImage.src = imgSrc;
-            modal.classList.remove('hidden');
-        }
-    });
+    function openModal(images) {
+        modalSlider.innerHTML = '';
+        const sliderContainer = createSlider(modalSlider, images);
+        modal.classList.remove('hidden');
 
-    closeModal.addEventListener('click', () => modal.classList.add('hidden'));
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) modal.classList.add('hidden');
+        let currentSlide = 0;
+        function slideModal() {
+            currentSlide = (currentSlide + 1) % images.length;
+            sliderContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        const intervalId = setInterval(slideModal, 5000);
+
+        closeModal.onclick = () => {
+            modal.classList.add('hidden');
+            clearInterval(intervalId);
+        };
+
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+                clearInterval(intervalId);
+            }
+        };
+    }
+
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('view-details')) {
+            const type = e.target.dataset.type;
+            openModal(galleryImages[type]);
+        } else if (e.target.classList.contains('view-project')) {
+            const projectIndex = parseInt(e.target.dataset.project);
+            openModal([projectImages[projectIndex]]);
+        }
     });
 
     // Contact Form
