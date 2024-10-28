@@ -302,7 +302,8 @@ header {
     }
 }
 
-#modal > div {
+#gallery-modal > div,
+#project-modal > div {
     animation: modalFadeIn 0.3s ease-out;
 }
 
@@ -389,4 +390,61 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
 
 .faq-icon.open {
     transform: rotate(180deg);
+}
+
+/* Gallery and Project modal styles */
+#gallery-modal-slider,
+#project-modal-slider {
+    width: 100%;
+    height: 0;
+    padding-bottom: 75%; /* 4:3 Aspect Ratio */
+    position: relative;
+    overflow: hidden;
+}
+
+#gallery-modal-slider img,
+#project-modal-slider img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Testimonial card styles */
+.testimonial-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.testimonial-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.testimonial-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.testimonial-name {
+    font-weight: bold;
+}
+
+.testimonial-rating {
+    color: #fbbf24;
+    margin-top: 5px;
+}
+
+.testimonial-text {
+    font-style: italic;
+    color: #4b5563;
 }
