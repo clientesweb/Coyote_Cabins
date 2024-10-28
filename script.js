@@ -98,93 +98,130 @@ document.addEventListener('DOMContentLoaded', function() {
         setInterval(moveNosotrosSlider, 5000);
     }
 
-    // Updated Gallery Filter
-const galleryGrid = document.getElementById('gallery-grid');
-const filterButtons = document.querySelectorAll('.filter-btn');
+    // Gallery Filter
+    const galleryGrid = document.getElementById('gallery-grid');
+    const filterButtons = document.querySelectorAll('.filter-btn');
 
-const galleryItems = [
-    { type: 'A', src: 'cabin-a1.jpg', description: 'Cabaña Tipo A - Modelo Pino' },
-    { type: 'A', src: 'cabin-a2.jpg', description: 'Cabaña Tipo A - Modelo Roble' },
-    { type: 'B', src: 'cabin-b1.jpg', description: 'Cabaña Tipo B - Modelo Cedro' },
-    { type: 'B', src: 'cabin-b2.jpg', description: 'Cabaña Tipo B - Modelo Abeto' },
-    { type: 'C', src: 'cabin-c1.jpg', description: 'Cabaña Tipo C - Modelo Secuoya' },
-    { type: 'C', src: 'cabin-c2.jpg', description: 'Cabaña Tipo C - Modelo Arce' },
-    { type: 'D', src: 'cabin-d1.jpg', description: 'Cabaña Tipo D - Modelo Nogal' },
-    { type: 'D', src: 'cabin-d2.jpg', description: 'Cabaña Tipo D - Modelo Caoba' },
-];
+    const galleryItems = [
+        { type: 'A', src: 'cabin-a1.jpg', description: 'Cabaña Tipo A - Modelo Pino' },
+        { type: 'A', src: 'cabin-a2.jpg', description: 'Cabaña Tipo A - Modelo Roble' },
+        { type: 'B', src: 'cabin-b1.jpg', description: 'Cabaña Tipo B - Modelo Cedro' },
+        { type: 'B', src: 'cabin-b2.jpg', description: 'Cabaña Tipo B - Modelo Abeto' },
+        { type: 'C', src: 'cabin-c1.jpg', description: 'Cabaña Tipo C - Modelo Secuoya' },
+        { type: 'C', src: 'cabin-c2.jpg', description: 'Cabaña Tipo C - Modelo Arce' },
+        { type: 'D', src: 'cabin-d1.jpg', description: 'Cabaña Tipo D - Modelo Nogal' },
+        { type: 'D', src: 'cabin-d2.jpg', description: 'Cabaña Tipo D - Modelo Caoba' },
+    ];
 
-function createGalleryItem(item) {
-    const div = document.createElement('div');
-    div.className = 'relative overflow-hidden rounded-lg shadow-lg group cursor-pointer';
-    div.innerHTML = `
-        <img src="${item.src}" alt="${item.description}" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
-        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p class="text-white text-center p-4">${item.description}</p>
-        </div>
-    `;
-    div.addEventListener('click', () => openModal(item));
-    return div;
-}
-
-function filterGallery(type) {
-    if (galleryGrid) {
-        galleryGrid.innerHTML = '';
-        const filteredItems = type === 'all' ? galleryItems : galleryItems.filter(item => item.type === type);
-        filteredItems.forEach(item => {
-            galleryGrid.appendChild(createGalleryItem(item));
-        });
-    }
-}
-
-filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        filterButtons.forEach(btn => btn.classList.remove('bg-gray-800', 'text-white'));
-        button.classList.add('bg-gray-800', 'text-white');
-        filterGallery(button.dataset.filter);
-    });
-});
-
-filterGallery('all');
-
-// Updated Proyectos Slider
-const proyectosSlider = document.getElementById('proyectos-slider');
-const scrollLeftBtn = document.getElementById('scroll-left');
-const scrollRightBtn = document.getElementById('scroll-right');
-
-const proyectos = [
-    { name: 'Proyecto 1', location: 'Ciudad de México', image: 'proyecto1.jpg' },
-    { name: 'Proyecto 2', location: 'Guadalajara', image: 'proyecto2.jpg' },
-    { name: 'Proyecto 3', location: 'Monterrey', image: 'proyecto3.jpg' },
-    { name: 'Proyecto 4', location: 'Cancún', image: 'proyecto4.jpg' },
-    { name: 'Proyecto 5', location: 'Puebla', image: 'proyecto5.jpg' },
-    { name: 'Proyecto 6', location: 'Tijuana', image: 'proyecto6.jpg' },
-];
-
-if (proyectosSlider) {
-    proyectos.forEach(proyecto => {
-        const card = document.createElement('div');
-        card.className = 'flex-shrink-0 w-80 bg-white rounded-lg shadow-md overflow-hidden';
-        card.innerHTML = `
-            <img src="${proyecto.image}" alt="${proyecto.name}" class="w-full h-48 object-cover">
-            <div class="p-4">
-                <h3 class="font-semibold text-lg mb-2">${proyecto.name}</h3>
-                <p class="text-gray-600">${proyecto.location}</p>
+    function createGalleryItem(item) {
+        const div = document.createElement('div');
+        div.className = 'relative overflow-hidden rounded-lg shadow-lg group cursor-pointer';
+        div.innerHTML = `
+            <img src="${item.src}" alt="${item.description}" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
+            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p class="text-white text-center p-4">${item.description}</p>
             </div>
         `;
-        proyectosSlider.appendChild(card);
-    });
-}
+        div.addEventListener('click', () => openModal(item));
+        return div;
+    }
 
-if (scrollLeftBtn && scrollRightBtn) {
-    scrollLeftBtn.addEventListener('click', () => {
-        proyectosSlider.scrollBy({ left: -300, behavior: 'smooth' });
+    function filterGallery(type) {
+        if (galleryGrid) {
+            galleryGrid.innerHTML = '';
+            const filteredItems = type === 'all' ? galleryItems : galleryItems.filter(item => item.type === type);
+            filteredItems.forEach(item => {
+                galleryGrid.appendChild(createGalleryItem(item));
+            });
+        }
+    }
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            filterButtons.forEach(btn => {
+                btn.classList.remove('bg-gray-800', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-800');
+            });
+            button.classList.remove('bg-gray-200', 'text-gray-800');
+            button.classList.add('bg-gray-800', 'text-white');
+            filterGallery(button.dataset.filter);
+        });
     });
 
-    scrollRightBtn.addEventListener('click', () => {
-        proyectosSlider.scrollBy({ left: 300, behavior: 'smooth' });
-    });
-}
+    filterGallery('all');
 
+    // Modal
+    const modal = document.getElementById('modal');
+    const closeModal = document.getElementById('close-modal');
+    const modalSlider = document.getElementById('modal-slider');
+    const modalDescription = document.getElementById('modal-description');
+
+    function openModal(item) {
+        if (modal && modalSlider && modalDescription) {
+            modalSlider.innerHTML = `<img src="${item.src}" alt="${item.description}" class="w-full h-64 object-cover">`;
+            modalDescription.textContent = item.description;
+            modal.classList.remove('hidden');
+        }
+    }
+
+    if (closeModal) {
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    }
+
+    // Proyectos Slider
+    const proyectosSlider = document.getElementById('proyectos-slider');
+    const scrollLeftBtn = document.getElementById('scroll-left');
+    const scrollRightBtn = document.getElementById('scroll-right');
+    const proyectos = [
+        { name: 'Proyecto 1', location: 'Ciudad de México', image: 'proyecto1.jpg' },
+        { name: 'Proyecto 2', location: 'Guadalajara', image: 'proyecto2.jpg' },
+        { name: 'Proyecto 3', location: 'Monterrey', image: 'proyecto3.jpg' },
+        { name: 'Proyecto 4', location: 'Cancún', image: 'proyecto4.jpg' },
+        { name: 'Proyecto 5', location: 'Puebla', image: 'proyecto5.jpg' },
+        { name: 'Proyecto 6', location: 'Tijuana', image: 'proyecto6.jpg' },
+    ];
+
+    if (proyectosSlider) {
+        proyectos.forEach(proyecto => {
+            const card = document.createElement('div');
+            card.className = 'flex-shrink-0 w-80 bg-white rounded-lg shadow-md overflow-hidden';
+            card.innerHTML = `
+                <img src="${proyecto.image}" alt="${proyecto.name}" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg mb-2">${proyecto.name}</h3>
+                    <p class="text-gray-600">${proyecto.location}</p>
+                </div>
+            `;
+            proyectosSlider.appendChild(card);
+        });
+    }
+
+    if (scrollLeftBtn && scrollRightBtn) {
+        scrollLeftBtn.addEventListener('click', () => {
+            proyectosSlider.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+
+        scrollRightBtn.addEventListener('click', () => {
+            proyectosSlider.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+    }
+
+    // Instagram Reels Slider
+    const instagramSlider = document.getElementById('instagram-slider');
+    const instagramScrollLeftBtn = document.getElementById('instagram-scroll-left');
+    const instagramScrollRightBtn = document.getElementById('instagram-scroll-right');
+
+    if (instagramScrollLeftBtn && instagramScrollRightBtn) {
+        instagramScrollLeftBtn.addEventListener('click', () => {
+            instagramSlider.scrollBy({ left: -315, behavior: 'smooth' });
+        });
+
+        instagramScrollRightBtn.addEventListener('click', () => {
+            instagramSlider.scrollBy({ left: 315, behavior: 'smooth' });
+        });
+    }
 
     // Testimonios
     const testimoniosContainer = document.querySelector('#testimonios .grid');
@@ -218,13 +255,26 @@ if (scrollLeftBtn && scrollRightBtn) {
     if (faqsContainer) {
         faqs.forEach((faq, index) => {
             const item = document.createElement('div');
-            item.className = 'mb-4 animate-fade-in-up';
-            item.style.animationDelay = `${index * 0.1}s`;
+            item.className = 'faq-item';
             item.innerHTML = `
-                <h3 class="font-semibold mb-2">${faq.question}</h3>
-                <p class="text-gray-600">${faq.answer}</p>
+                <div class="faq-question">
+                    <h3 class="font-semibold">${faq.question}</h3>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p class="text-gray-600 py-2">${faq.answer}</p>
+                </div>
             `;
             faqsContainer.appendChild(item);
+
+            const question = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer');
+            const icon = item.querySelector('.faq-icon');
+
+            question.addEventListener('click', () => {
+                answer.classList.toggle('open');
+                icon.classList.toggle('open');
+            });
         });
     }
 
@@ -259,30 +309,4 @@ if (scrollLeftBtn && scrollRightBtn) {
             contactForm.reset();
         });
     }
-
-    // Apply background to sections
-    const sections = document.querySelectorAll('.section-background');
-    sections.forEach(section => {
-        section.style.position = 'relative';
-        section.style.overflow = 'hidden';
-        const bg = document.createElement('div');
-        bg.className = 'absolute inset-0 z-0';
-        bg.style.backgroundImage = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 L100 50 L50 100 L0 50 Z' fill='%23f3f4f6' fill-opacity='0.4'/%3E%3C/svg%3E\")";
-        bg.style.backgroundSize = '100px 100px';
-        bg.style.opacity = '0.1';
-        section.insertBefore(bg, section.firstChild);
-        section.style.position = 'relative';
-        section.style.zIndex = '1';
-    });
-
-    // Call-to-action button navigation
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            
-            });
-        });
-    });
 });
