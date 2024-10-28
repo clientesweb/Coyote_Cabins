@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function filterGallery(type) {
         if (galleryGrid) {
             galleryGrid.innerHTML = '';
-            const filteredItems = type === 'A' ? galleryItems : galleryItems.filter(item => item.type === type);
+            const filteredItems = type === 'all' ? galleryItems : galleryItems.filter(item => item.type === type);
             filteredItems.forEach(item => {
                 galleryGrid.appendChild(createGalleryItem(item));
             });
@@ -144,27 +144,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    filterGallery('A');
-
-    // Modal
-    const modal = document.getElementById('modal');
-    const closeModal = document.getElementById('close-modal');
-    const modalSlider = document.getElementById('modal-slider');
-    const modalDescription = document.getElementById('modal-description');
-
-    function openModal(item) {
-        if (modal && modalSlider && modalDescription) {
-            modalSlider.innerHTML = `<img src="${item.src}" alt="${item.description}" class="w-full h-64 object-cover">`;
-            modalDescription.textContent = item.description;
-            modal.classList.remove('hidden');
-        }
-    }
-
-    if (closeModal) {
-        closeModal.addEventListener('click', () => {
-            modal.classList.add('hidden');
-        });
-    }
+    // Initial filter
+    filterGallery('all');
 
     // Proyectos Slider
     const proyectosSlider = document.getElementById('proyectos-slider');
@@ -261,6 +242,26 @@ document.addEventListener('DOMContentLoaded', function() {
             // Here you would typically send the form data to your server
             alert('Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.');
             contactForm.reset();
+        });
+    }
+
+    // Modal
+    const modal = document.getElementById('modal');
+    const closeModal = document.getElementById('close-modal');
+    const modalSlider = document.getElementById('modal-slider');
+    const modalDescription = document.getElementById('modal-description');
+
+    function openModal(item) {
+        if (modal && modalSlider && modalDescription) {
+            modalSlider.innerHTML = `<img src="${item.src}" alt="${item.description}" class="w-full h-64 object-cover">`;
+            modalDescription.textContent = item.description;
+            modal.classList.remove('hidden');
+        }
+    }
+
+    if (closeModal) {
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
         });
     }
 
