@@ -181,16 +181,6 @@ html {
     visibility: visible;
 }
 
-/* Preloader */
-#preloader {
-    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
-}
-
-#preloader.hidden {
-    opacity: 0;
-    visibility: hidden;
-}
-
 /* Instagram Reels Section */
 .instagram-post {
     position: relative;
@@ -233,8 +223,6 @@ html {
 /* Modal slider */
 #modal-slider {
     position: relative;
-    width: 100%;
-    height: 300px;
     overflow: hidden;
 }
 
@@ -245,50 +233,32 @@ html {
 
 #modal-slider img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
     flex-shrink: 0;
 }
 
-/* Estilos para los sliders */
-.slider-container {
-    position: relative;
-    overflow: hidden;
+/* Responsive adjustments for modal */
+@media (max-width: 640px) {
+    #modal .bg-white {
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
 }
 
-.slider-container img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+/* WhatsApp button pulse animation */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
 }
 
-.slider-container img.active {
-    opacity: 1;
-}
-
-/* Ajustes para el banner superior y el header */
-#top-banner {
-    justify-content: space-between;
-}
-
-#banner-messages {
-    text-align: left;
-}
-
-header .container {
-    justify-content: space-between;
-}
-
-/* Centrar el contenido del hero */
-#inicio .absolute {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+.fixed.bottom-4.right-4 {
+    animation: pulse 2s infinite;
 }
