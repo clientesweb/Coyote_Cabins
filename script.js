@@ -1,4 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Preloader
+    const preloader = document.getElementById('preloader');
+    
+    function hidePreloader() {
+        preloader.classList.add('hidden');
+    }
+
+    // Simulate loading time (remove this in production)
+    setTimeout(hidePreloader, 2000);
+
+    // Hide preloader when the page is fully loaded
+    window.addEventListener('load', hidePreloader);
+
     // Top Banner Messages
     const bannerMessages = document.querySelectorAll('.banner-message');
     let currentMessage = 0;
